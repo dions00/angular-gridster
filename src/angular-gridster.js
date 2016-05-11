@@ -823,6 +823,7 @@
 		this.minSizeY = 0;
 		this.maxSizeX = null;
 		this.maxSizeY = null;
+		this.resizable = true;
 
 		this.init = function($element, gridster) {
 			this.$element = $element;
@@ -1999,6 +2000,7 @@
 								col: item.col,
 								sizeX: item.sizeX,
 								sizeY: item.sizeY,
+								resizable: item.resizable,
 								minSizeX: 0,
 								minSizeY: 0,
 								maxSizeX: null,
@@ -2014,7 +2016,7 @@
 
 					$el.addClass('gridster-item');
 
-					var aspects = ['minSizeX', 'maxSizeX', 'minSizeY', 'maxSizeY', 'sizeX', 'sizeY', 'row', 'col'],
+					var aspects = ['minSizeX', 'maxSizeX', 'minSizeY', 'maxSizeY', 'sizeX', 'sizeY', 'row', 'col', 'resizable'],
 						$getters = {};
 
 					var expressions = [];
@@ -2037,7 +2039,7 @@
 
 						// initial set
 						var val = $getters[aspect](scope);
-						if (typeof val === 'number') {
+						if (typeof val === 'number' || typeof val === 'boolean') {
 							item[aspect] = val;
 						}
 					};
@@ -2096,14 +2098,14 @@
 					}
 
 					scope.$watch(function() {
-						return item.sizeY + ',' + item.sizeX + ',' + item.minSizeX + ',' + item.maxSizeX + ',' + item.minSizeY + ',' + item.maxSizeY;
+						return item.sizeY + ',' + item.sizeX + ',' + item.minSizeX + ',' + item.maxSizeX + ',' + item.minSizeY + ',' + item.maxSizeY + ',' + item.resizable;
 					}, sizeChanged);
 
 					var draggable = new GridsterDraggable($el, scope, gridster, item, options);
 					var resizable = new GridsterResizable($el, scope, gridster, item, options);
 
 					var updateResizable = function() {
-						resizable.toggle(!gridster.isMobile && gridster.resizable && gridster.resizable.enabled);
+						resizable.toggle(!gridster.isMobile && gridster.resizable && gridster.resizable.enabled && item.resizable);
 					};
 					updateResizable();
 
