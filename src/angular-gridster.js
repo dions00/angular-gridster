@@ -160,10 +160,19 @@
 						var items = this.getItems(rowIndex, colIndex, item.sizeX, item.sizeY, item);
 						if (items.length === 0 && this.canItemOccupy(item, rowIndex, colIndex)) {
 							this.putItem(item, rowIndex, colIndex);
+
+							if (gridster.addItemSucceed) {
+								gridster.addItemSucceed(item);
+							}
 							return;
 						}
 					}
 				}
+
+				if (gridster.addItemFailed) {
+					gridster.addItemFailed(item);
+				}
+
 				throw new Error('Unable to place item!');
 			};
 
